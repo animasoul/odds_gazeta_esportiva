@@ -60,6 +60,13 @@ const defaultTermRelationshipsSelect = {
   term_order: true,
 } satisfies Prisma.wp_term_relationshipsSelect;
 
+const defaultPostMetaSelect = {
+  meta_id: true,
+  post_id: true,
+  meta_key: true,
+  meta_value: true,
+} satisfies Prisma.wp_postmetaSelect;
+
 export const postRouter = createTRPCRouter({
   getLatest: publicProcedure.query(({ ctx }: { ctx: Context }) => {
     return ctx.db.wp_posts.findFirst({
@@ -70,8 +77,28 @@ export const postRouter = createTRPCRouter({
   }),
   getAllPosts: publicProcedure.query(({ ctx }: { ctx: Context }) => {
     return ctx.db.wp_posts.findMany({
-      select: defaultPostSelect,
-      where: { post_status: "publish", post_type: "post" },
+      select: {
+        ...defaultPostSelect,
+        wp_term_relationships: {
+          select: {
+            ...defaultTermRelationshipsSelect,
+            wp_term_taxonomy: {
+              select: {
+                ...defaultTermTaxonomySelect,
+                wp_terms: {
+                  select: {
+                    ...defaultTermSelect,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      where: {
+        post_status: "publish",
+        post_type: "post",
+      },
       orderBy: { post_modified: "desc" },
     });
   }),
@@ -123,18 +150,12 @@ export const postRouter = createTRPCRouter({
         where: { slug: input.slug },
       });
     }),
-  getPostsByCategorySlug: publicProcedure
-    .input(z.object({ slug: z.string() }))
-    .query(({ ctx, input }: { ctx: Context; input: { slug: string } }) => {
+  getPostsByCategory: publicProcedure
+    .input(z.object({ category: z.string() }))
+    .query(({ ctx, input }: { ctx: Context; input: { category: string } }) => {
       return ctx.db.wp_posts.findMany({
-        select: defaultPostSelect,
-        where: {
-          post_status: "publish",
-          post_type: "post",
-          wp_terms: { slug: input.slug },
-        },
-        orderBy: { post_modified: "desc" },
-        include: {
+        select: {
+          ...defaultPostSelect,
           wp_term_relationships: {
             select: {
               ...defaultTermRelationshipsSelect,
@@ -151,6 +172,33 @@ export const postRouter = createTRPCRouter({
             },
           },
         },
+        where: {
+          post_status: "publish",
+          post_type: "post",
+          wp_term_relationships: {
+            some: {
+              wp_term_taxonomy: {
+                wp_terms: {
+                  slug: input.category,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { post_modified: "desc" },
       });
     }),
+  getCategories: publicProcedure.query(({ ctx }: { ctx: Context }) => {
+    return ctx.db.wp_term_taxonomy.findMany({
+      select: {
+        ...defaultTermTaxonomySelect,
+        wp_terms: {
+          select: {
+            ...defaultTermSelect,
+          },
+        },
+      },
+      where: { taxonomy: "category" },
+    });
+  }),
 });
