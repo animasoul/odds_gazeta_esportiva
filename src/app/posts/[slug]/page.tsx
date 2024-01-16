@@ -1,7 +1,9 @@
 import { api } from "~/trpc/server";
 import styles from "../../index.module.css";
+import Image from "next/image";
 
 type Post = {
+  ID: bigint;
   post_title: string;
   post_date: Date;
   post_modified: Date;
@@ -39,6 +41,12 @@ export default async function PostBySlug({
               <h1 className={styles.title}>
                 {(post as { post_title: string }).post_title}
               </h1>
+              <Image
+                src={`/images/wp_dummy_content_generator_${post.ID}.jpg`}
+                alt={`${post.post_title}`}
+                width={400}
+                height={400}
+              />
               <p>
                 Created {post.post_date.toLocaleDateString("pt-BR")}, Modified{" "}
                 {post.post_modified.toLocaleDateString("pt-BR")}

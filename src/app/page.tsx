@@ -90,20 +90,21 @@ async function DisplayPosts() {
   }
 
   return (
-    <div className={styles.cardRow}>
-      {allPosts ? (
-        <>
-          <p className={styles.showcaseText}>
-            You have {allPosts.length} posts total.
-          </p>
-          {allPosts.length > 0 &&
-            allPosts.map((post: Post) => (
-              <Link
-                key={post.ID}
-                href={`/posts/${post.post_name}`}
-                className={styles.card}
-              >
-                {/* <pre className={styles.preBox}>
+    <div>
+      <div className={styles.cardRow}>
+        {allPosts ? (
+          <>
+            <p className={styles.showcaseText}>
+              You have {allPosts.length} posts total.
+            </p>
+            {allPosts.length > 0 &&
+              allPosts.map((post: Post) => (
+                <Link
+                  key={post.ID}
+                  href={`/posts/${post.post_name}`}
+                  className={styles.card}
+                >
+                  {/* <pre className={styles.preBox}>
                   {JSON.stringify(
                     post,
                     (key, value) =>
@@ -112,30 +113,32 @@ async function DisplayPosts() {
                     4
                   )}
                 </pre> */}
-                <h3 className={styles.cardTitle}>{post.post_title} →</h3>
-                <div className={styles.cardText}>
-                  {/* display the wp_terms.name if taxonomy == category */}
+                  <h3 className={styles.cardTitle}>{post.post_title} →</h3>
+                  <div className={styles.cardText}>
+                    {/* display the wp_terms.name if taxonomy == category */}
 
-                  {post.wp_term_relationships.map((relationship) =>
-                    relationship.wp_term_taxonomy?.taxonomy === "category" &&
-                    relationship.wp_term_taxonomy.wp_terms ? (
-                      <p
-                        key={relationship.wp_term_taxonomy.term_taxonomy_id}
-                        className={styles.showcaseText}
-                      >
-                        Category: {relationship.wp_term_taxonomy.wp_terms.name}
-                      </p>
-                    ) : null
-                  )}
+                    {post.wp_term_relationships.map((relationship) =>
+                      relationship.wp_term_taxonomy?.taxonomy === "category" &&
+                      relationship.wp_term_taxonomy.wp_terms ? (
+                        <p
+                          key={relationship.wp_term_taxonomy.term_taxonomy_id}
+                          className={styles.showcaseText}
+                        >
+                          Category:{" "}
+                          {relationship.wp_term_taxonomy.wp_terms.name}
+                        </p>
+                      ) : null
+                    )}
 
-                  {truncateText(post.post_content, 100)}
-                </div>
-              </Link>
-            ))}
-        </>
-      ) : (
-        <p className={styles.showcaseText}>Loading posts...</p>
-      )}
+                    {truncateText(post.post_content, 100)}
+                  </div>
+                </Link>
+              ))}
+          </>
+        ) : (
+          <p className={styles.showcaseText}>Loading posts...</p>
+        )}
+      </div>
       {latestPost !== null ? (
         <p className={styles.showcaseText}>
           Your most recent post:{" "}
