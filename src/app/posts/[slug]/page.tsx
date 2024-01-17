@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 import styles from "../../index.module.css";
 import Image from "next/image";
-import { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 
 type Post = {
   ID: bigint;
