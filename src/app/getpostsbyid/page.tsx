@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import styles from "../../index.module.css";
+import styles from "../index.module.css";
 
 export default async function Post({
   params,
