@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import styles from "../../index.module.css";
 import Image from "next/image";
+import { Metadata, ResolvingMetadata } from "next";
 
 type Post = {
   ID: bigint;
@@ -23,6 +24,30 @@ type Post = {
   }[];
   // include any other properties you need
 } | null;
+
+type Props = {
+  params: { slug: string };
+};
+// Truncate text to a specified length
+function truncateText(text: string, length: number): string {
+  return text.length > length ? text.substring(0, length) + "..." : text;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // read route params
+  const slug = params.slug;
+  const post: Post = await api.post.getPostBySlug.query({ slug });
+
+  let description = "";
+  if (post?.post_content) {
+    description = truncateText(post.post_content, 100);
+  }
+
+  return {
+    title: post?.post_title,
+    description: description,
+  };
+}
 
 export default async function PostBySlug({
   params,
