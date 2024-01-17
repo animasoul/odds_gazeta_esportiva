@@ -97,6 +97,15 @@ async function DisplayPosts() {
             <p className={styles.showcaseText}>
               You have {allPosts.length} posts total.
             </p>
+            {/* <pre className={styles.preBox}>
+              {JSON.stringify(
+                allPosts,
+                (key, value) =>
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-redundant-type-constituents
+                  typeof value === "bigint" ? value.toString() : value,
+                4
+              )}
+            </pre> */}
             {allPosts.length > 0 &&
               allPosts.map((post: Post) => (
                 <Link
@@ -105,14 +114,14 @@ async function DisplayPosts() {
                   className={styles.card}
                 >
                   {/* <pre className={styles.preBox}>
-                  {JSON.stringify(
-                    post,
-                    (key, value) =>
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-redundant-type-constituents
-                      typeof value === "bigint" ? value.toString() : value,
-                    4
-                  )}
-                </pre> */}
+                    {JSON.stringify(
+                      post,
+                      (key, value) =>
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-redundant-type-constituents
+                        typeof value === "bigint" ? value.toString() : value,
+                      4
+                    )}
+                  </pre> */}
                   <h3 className={styles.cardTitle}>{post.post_title} →</h3>
                   <div className={styles.cardText}>
                     {/* display the wp_terms.name if taxonomy == category */}

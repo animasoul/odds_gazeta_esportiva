@@ -98,6 +98,13 @@ export const postRouter = createTRPCRouter({
       where: {
         post_status: "publish",
         post_type: "post",
+        // wp_term_relationships: {
+        //   some: {
+        //     wp_term_taxonomy: {
+        //       taxonomy: "category",
+        //     },
+        //   },
+        // },
       },
       orderBy: { post_modified: "desc" },
     });
