@@ -86,7 +86,13 @@ async function DisplayPosts() {
 
   // Truncate text to a specified length
   function truncateText(text: string, length: number): string {
-    return text.length > length ? text.substring(0, length) + "..." : text;
+    // Remove HTML tags
+    const strippedText = text.replace(/<[^>]+>/g, "");
+
+    // Truncate text
+    return strippedText.length > length
+      ? strippedText.substring(0, length) + "..."
+      : strippedText;
   }
 
   return (
@@ -138,7 +144,7 @@ async function DisplayPosts() {
                         </p>
                       ) : null
                     )}
-                    <div
+                    {/* <div
                       dangerouslySetInnerHTML={{
                         __html: truncateText(
                           (post as { post_content: string }).post_content,
@@ -146,8 +152,8 @@ async function DisplayPosts() {
                         ),
                       }}
                       className={styles.showcaseText}
-                    />
-                    {/* {truncateText(post.post_content, 100)} */}
+                    /> */}
+                    {truncateText(post.post_content, 100)}
                   </div>
                 </Link>
               ))}
