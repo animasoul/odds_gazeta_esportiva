@@ -14,3 +14,12 @@ a {
 * {
   box-sizing: border-box;
 }
+a:hover {
+  color: #00acad;
+}
+
+a {
+  font-weight: 600;
+  text-decoration: underline;
+  color: #01676e;
+}

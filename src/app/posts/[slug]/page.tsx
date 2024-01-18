@@ -2,28 +2,7 @@ import { api } from "~/trpc/server";
 import styles from "../../index.module.css";
 import Image from "next/image";
 import type { Metadata } from "next";
-
-type Post = {
-  ID: bigint;
-  post_title: string;
-  post_date: Date;
-  post_modified: Date;
-  post_content: string;
-  wp_term_relationships: {
-    wp_term_taxonomy: {
-      wp_terms: {
-        name: string;
-        slug: string;
-      } | null;
-      description: string;
-      term_taxonomy_id: bigint;
-      term_id: bigint;
-      taxonomy: string;
-    } | null;
-    term_taxonomy_id: bigint;
-  }[];
-  // include any other properties you need
-} | null;
+import type { Post } from "../../_types/post";
 
 type Props = {
   params: { slug: string };
@@ -91,10 +70,16 @@ export default async function PostBySlug({
                 )}
               </>
 
-              <p className={styles.showcaseText}>
+              {/* <p className={styles.showcaseText}>
                 <br />
                 {(post as { post_content: string }).post_content}
-              </p>
+              </p> */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: (post as { post_content: string }).post_content,
+                }}
+                className={styles.showcaseText}
+              />
               <h3>Raw Data</h3>
               <pre className={styles.preBox}>
                 {JSON.stringify(
