@@ -138,8 +138,16 @@ async function DisplayPosts() {
                         </p>
                       ) : null
                     )}
-
-                    {truncateText(post.post_content, 100)}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: truncateText(
+                          (post as { post_content: string }).post_content,
+                          100
+                        ),
+                      }}
+                      className={styles.showcaseText}
+                    />
+                    {/* {truncateText(post.post_content, 100)} */}
                   </div>
                 </Link>
               ))}
