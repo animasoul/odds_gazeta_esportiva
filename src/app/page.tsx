@@ -3,27 +3,8 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 import styles from "./index.module.css";
+import type { Post } from "./_types/post";
 
-interface Post {
-  ID: bigint;
-  post_name: string;
-  post_title: string;
-  post_content: string;
-  wp_term_relationships: {
-    wp_term_taxonomy: {
-      wp_terms: {
-        name: string;
-        slug: string;
-      } | null;
-      description: string;
-      term_taxonomy_id: bigint;
-      term_id: bigint;
-      taxonomy: string;
-    } | null;
-    term_taxonomy_id: bigint;
-  }[];
-  // include other properties as needed
-}
 interface Category {
   term_id: bigint;
   wp_terms: {
@@ -81,7 +62,6 @@ async function DisplayCategories() {
 }
 
 async function DisplayPosts() {
-  const latestPost: Post | null = await api.post.getLatest.query();
   const allPosts: Post[] = await api.post.getAllPosts.query();
 
   // Truncate text to a specified length
@@ -113,19 +93,21 @@ async function DisplayPosts() {
               )}
             </pre> */}
             {allPosts.length > 0 &&
-              allPosts.map((post: Post) => (
-                <Link
-                  key={post.ID}
-                  href={`/${
-                    post.wp_term_relationships.find(
-                      (relationship) =>
-                        relationship.wp_term_taxonomy?.taxonomy ===
-                          "category" && relationship.wp_term_taxonomy?.wp_terms
-                    )?.wp_term_taxonomy?.wp_terms?.slug ?? "uncategorized"
-                  }/${post.post_name}`}
-                  className={styles.card}
-                >
-                  {/* <pre className={styles.preBox}>
+              allPosts.map((post: Post) =>
+                post !== null ? (
+                  <Link
+                    key={post.ID}
+                    href={`/${
+                      post.wp_term_relationships.find(
+                        (relationship) =>
+                          relationship.wp_term_taxonomy?.taxonomy ===
+                            "category" &&
+                          relationship.wp_term_taxonomy?.wp_terms
+                      )?.wp_term_taxonomy?.wp_terms?.slug ?? "uncategorized"
+                    }/${post.post_name}`}
+                    className={styles.card}
+                  >
+                    {/* <pre className={styles.preBox}>
                     {JSON.stringify(
                       post,
                       (key, value) =>
@@ -134,23 +116,24 @@ async function DisplayPosts() {
                       4
                     )}
                   </pre> */}
-                  <h3 className={styles.cardTitle}>{post.post_title} →</h3>
-                  <div className={styles.cardText}>
-                    {/* display the wp_terms.name if taxonomy == category */}
+                    <h3 className={styles.cardTitle}>{post.post_title} →</h3>
+                    <div className={styles.cardText}>
+                      {/* display the wp_terms.name if taxonomy == category */}
 
-                    {post.wp_term_relationships.map((relationship) =>
-                      relationship.wp_term_taxonomy?.taxonomy === "category" &&
-                      relationship.wp_term_taxonomy.wp_terms ? (
-                        <p
-                          key={relationship.wp_term_taxonomy.term_taxonomy_id}
-                          className={styles.showcaseText}
-                        >
-                          Category:{" "}
-                          {relationship.wp_term_taxonomy.wp_terms.name}
-                        </p>
-                      ) : null
-                    )}
-                    {/* <div
+                      {post.wp_term_relationships.map((relationship) =>
+                        relationship.wp_term_taxonomy?.taxonomy ===
+                          "category" &&
+                        relationship.wp_term_taxonomy.wp_terms ? (
+                          <p
+                            key={relationship.wp_term_taxonomy.term_taxonomy_id}
+                            className={styles.showcaseText}
+                          >
+                            Category:{" "}
+                            {relationship.wp_term_taxonomy.wp_terms.name}
+                          </p>
+                        ) : null
+                      )}
+                      {/* <div
                       dangerouslySetInnerHTML={{
                         __html: truncateText(
                           (post as { post_content: string }).post_content,
@@ -159,10 +142,11 @@ async function DisplayPosts() {
                       }}
                       className={styles.showcaseText}
                     /> */}
-                    {truncateText(post.post_content, 100)}
-                  </div>
-                </Link>
-              ))}
+                      {truncateText(post.post_content, 100)}
+                    </div>
+                  </Link>
+                ) : null
+              )}
           </>
         ) : (
           <p className={styles.showcaseText}>Loading posts...</p>
