@@ -3,9 +3,10 @@ import styles from "../../index.module.css";
 import Image from "next/image";
 import type { Metadata } from "next";
 import type { Post } from "../../_types/post";
+import Link from "next/link";
 
 type Props = {
-  params: { slug: string };
+  params: { post: string };
 };
 // Truncate text to a specified length
 function truncateText(text: string, length: number): string {
@@ -14,7 +15,7 @@ function truncateText(text: string, length: number): string {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // read route params
-  const slug = params.slug;
+  const slug = params.post;
   const post: Post = await api.post.getPostBySlug.query({ slug });
 
   let description = "";
@@ -31,9 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostBySlug({
   params,
 }: {
-  readonly params: { slug: string };
+  readonly params: { post: string };
 }) {
-  const slug = params.slug;
+  const slug = params.post;
   const post: Post = await api.post.getPostBySlug.query({ slug });
 
   return (
@@ -64,7 +65,12 @@ export default async function PostBySlug({
                       key={relationship.wp_term_taxonomy.term_taxonomy_id}
                       className={styles.showcaseText}
                     >
-                      Category: {relationship.wp_term_taxonomy.wp_terms.name}
+                      Category:{` `}
+                      <Link
+                        href={`/${relationship.wp_term_taxonomy.wp_terms.slug}`}
+                      >
+                        {relationship.wp_term_taxonomy.wp_terms.name}
+                      </Link>
                     </p>
                   ) : null
                 )}

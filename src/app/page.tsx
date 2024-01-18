@@ -116,7 +116,13 @@ async function DisplayPosts() {
               allPosts.map((post: Post) => (
                 <Link
                   key={post.ID}
-                  href={`/posts/${post.post_name}`}
+                  href={`/${
+                    post.wp_term_relationships.find(
+                      (relationship) =>
+                        relationship.wp_term_taxonomy?.taxonomy ===
+                          "category" && relationship.wp_term_taxonomy?.wp_terms
+                    )?.wp_term_taxonomy?.wp_terms?.slug ?? "uncategorized"
+                  }/${post.post_name}`}
                   className={styles.card}
                 >
                   {/* <pre className={styles.preBox}>
@@ -162,16 +168,6 @@ async function DisplayPosts() {
           <p className={styles.showcaseText}>Loading posts...</p>
         )}
       </div>
-      {latestPost !== null ? (
-        <p className={styles.showcaseText}>
-          Your most recent post:{" "}
-          <Link href={`/posts/${latestPost.post_name}`}>
-            {latestPost.post_title}
-          </Link>
-        </p>
-      ) : (
-        <p className={styles.showcaseText}>You have no posts yet.</p>
-      )}
       <CreatePost />
     </div>
   );

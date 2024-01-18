@@ -29,7 +29,7 @@ export default async function PostsByCategory({
                     <span key={Number((post as { ID: bigint }).ID)}>
                       <br />
                       <Link
-                        href={`/posts/${
+                        href={`/${category}/${
                           (post as { post_name: string }).post_name
                         }`}
                       >
