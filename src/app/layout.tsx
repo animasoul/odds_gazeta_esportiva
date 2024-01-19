@@ -1,11 +1,10 @@
 import "~/styles/globals.css";
+import HeaderNavigation from "~/app/_components/HeaderNavigation";
 
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import Link from "next/link";
-import Image from "next/image";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,27 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "1rem",
-            background: "#FFFFFF",
-            boxShadow: "0px 3px 16px rgba(110, 110, 110, 0.15)",
-          }}
-        >
-          <Link href="/">
-            <Image
-              src="/icone-logo-gazeta.svg"
-              alt="Gazeta Esportiva"
-              width="114"
-              height="36"
-            />
-          </Link>
-
-          <Link href="/">Home</Link>
-        </nav>
+        <HeaderNavigation />
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
         </TRPCReactProvider>
