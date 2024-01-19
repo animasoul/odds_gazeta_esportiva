@@ -111,14 +111,6 @@ export const postRouter = createTRPCRouter({
       orderBy: { post_modified: "desc" },
     });
   }),
-  getOnePost: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(({ ctx, input }: { ctx: Context; input: { id: number } }) => {
-      return ctx.db.wp_posts.findUnique({
-        select: defaultPostSelect,
-        where: { ID: input.id },
-      });
-    }),
   getPostBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(({ ctx, input }: { ctx: Context; input: { slug: string } }) => {
