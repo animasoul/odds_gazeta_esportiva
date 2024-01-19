@@ -44,7 +44,6 @@ export default async function PostBySlug({
   const author: Author = await api.post.getAuthorById.query({
     id: Number(post?.post_author),
   });
-  console.log(author);
 
   return (
     <main className={styles.main}>
