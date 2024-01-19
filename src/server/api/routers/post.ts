@@ -16,6 +16,7 @@ type Context = {
   db: {
     wp_posts: WpPosts;
     wp_term_taxonomy: WpPosts;
+    wp_users: WpPosts;
     // include any other properties you need
   };
   // include any other properties you need
@@ -93,6 +94,7 @@ export const postRouter = createTRPCRouter({
               },
             },
           },
+          where: { wp_term_taxonomy: { taxonomy: "category" } },
         },
       },
       where: {
@@ -137,6 +139,7 @@ export const postRouter = createTRPCRouter({
                 },
               },
             },
+            // where: { wp_term_taxonomy: { taxonomy: "category" } },
           },
         },
         where: { post_name: input.slug },
@@ -208,4 +211,14 @@ export const postRouter = createTRPCRouter({
       where: { taxonomy: "category" },
     });
   }),
+  getAuthorById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ ctx, input }: { ctx: Context; input: { id: number } }) => {
+      return ctx.db.wp_users.findUnique({
+        select: {
+          display_name: true,
+        },
+        where: { ID: input.id },
+      });
+    }),
 });

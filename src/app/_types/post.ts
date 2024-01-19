@@ -5,6 +5,7 @@ export type Post = {
   post_date: Date;
   post_modified: Date;
   post_content: string;
+  post_author: bigint;
   wp_term_relationships: {
     wp_term_taxonomy: {
       wp_terms: {

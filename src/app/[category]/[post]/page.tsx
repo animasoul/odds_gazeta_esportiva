@@ -29,6 +29,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+interface Author {
+  display_name: string;
+  // include other properties as needed
+}
+
 export default async function PostBySlug({
   params,
 }: {
@@ -36,6 +41,10 @@ export default async function PostBySlug({
 }) {
   const slug = params.post;
   const post: Post = await api.post.getPostBySlug.query({ slug });
+  const author: Author = await api.post.getAuthorById.query({
+    id: Number(post?.post_author),
+  });
+  console.log(author);
 
   return (
     <main className={styles.main}>
@@ -55,6 +64,9 @@ export default async function PostBySlug({
               <p>
                 Created {post.post_date.toLocaleDateString("pt-BR")}, Modified{" "}
                 {post.post_modified.toLocaleDateString("pt-BR")}
+              </p>
+              <p className={styles.showcaseText}>
+                Author: {author.display_name ?? "Unknown"}
               </p>
               {/* display the wp_terms.name if taxonomy == category */}
               <>
