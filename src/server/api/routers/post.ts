@@ -17,6 +17,8 @@ type Context = {
     wp_posts: WpPosts;
     wp_term_taxonomy: WpPosts;
     wp_users: WpPosts;
+    wp_term_relationships: WpPosts;
+    wp_terms: WpPosts;
     // include any other properties you need
   };
   // include any other properties you need
@@ -140,7 +142,7 @@ export const postRouter = createTRPCRouter({
   getCategoryBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(({ ctx, input }: { ctx: Context; input: { slug: string } }) => {
-      return ctx.db.wp_term_taxonomy.findUnique({
+      return ctx.db.wp_term_taxonomy.findFirst({
         select: {
           ...defaultTermTaxonomySelect,
           wp_terms: {
@@ -149,7 +151,7 @@ export const postRouter = createTRPCRouter({
             },
           },
         },
-        where: { slug: input.slug },
+        where: { wp_terms: { slug: input.slug } },
       });
     }),
   getPostsByCategory: publicProcedure

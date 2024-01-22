@@ -2,9 +2,11 @@ import "~/styles/globals.css";
 import HeaderNavigation from "~/app/_components/HeaderNavigation";
 
 import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
+
+export const revalidate = 30;
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,9 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <HeaderNavigation />
-        <TRPCReactProvider cookies={cookies().toString()}>
-          {children}
-        </TRPCReactProvider>
+        {/* <TRPCReactProvider cookies={cookies().toString()}> */}
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

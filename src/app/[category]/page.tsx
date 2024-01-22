@@ -3,6 +3,14 @@ import styles from "../index.module.css";
 import Link from "next/link";
 import type { Post } from "../_types/post";
 
+interface CategoryData {
+  description: string;
+  wp_terms: {
+    name: string;
+    // include other properties as needed
+  };
+}
+
 export default async function PostsByCategory({
   params,
 }: {
@@ -12,6 +20,10 @@ export default async function PostsByCategory({
   const allPosts: Post[] = await api.post.getPostsByCategory.query({
     category,
   });
+  const categoryData: CategoryData = await api.post.getCategoryBySlug.query({
+    slug: category,
+  });
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
@@ -20,9 +32,14 @@ export default async function PostsByCategory({
             <div>
               <p className={styles.showcaseText}>
                 Category: {` `}
-                {category}: {Array.isArray(allPosts) ? allPosts.length : 0}{" "}
-                posts total.
+                {categoryData.wp_terms.name} :{" "}
+                {Array.isArray(allPosts) ? allPosts.length : 0} posts total.
               </p>
+              {categoryData.description && (
+                <p className={styles.showcaseText}>
+                  {categoryData.description}
+                </p>
+              )}
               {Array.isArray(allPosts) && allPosts.length > 0 && (
                 <p className={styles.showcaseText}>
                   {allPosts.map((post) => (

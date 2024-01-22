@@ -12,7 +12,7 @@ export const api = createTRPCReact<AppRouter>();
 
 export function TRPCReactProvider(props: {
   children: React.ReactNode;
-  cookies: string;
+  // cookies: string;
 }) {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -27,12 +27,12 @@ export function TRPCReactProvider(props: {
         }),
         unstable_httpBatchStreamLink({
           url: getUrl(),
-          headers() {
-            return {
-              cookie: props.cookies,
-              "x-trpc-source": "react",
-            };
-          },
+          // headers() {
+          //   return {
+          //     cookie: props.cookies,
+          //     "x-trpc-source": "react",
+          //   };
+          // },
         }),
       ],
     })

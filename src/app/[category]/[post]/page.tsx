@@ -4,6 +4,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import type { Post } from "../../_types/post";
 import Link from "next/link";
+import { Suspense } from "react";
+import GetBitcoinData from "~/app/_components/GetBitcoinData";
 
 type Props = {
   params: { post: string };
@@ -54,6 +56,7 @@ export default async function PostBySlug({
               <h1 className={styles.title}>
                 {(post as { post_title: string }).post_title}
               </h1>
+
               <Image
                 src={`/images/wp_dummy_content_generator_${post.ID}.jpg`}
                 alt={`${post.post_title}`}
@@ -67,6 +70,7 @@ export default async function PostBySlug({
               <p className={styles.showcaseText}>
                 Author: {author.display_name ?? "Unknown"}
               </p>
+
               {/* display the wp_terms.name if taxonomy == category */}
               <>
                 {post.wp_term_relationships.map((relationship) =>
@@ -97,6 +101,12 @@ export default async function PostBySlug({
                 }}
                 className={styles.showcaseText}
               />
+              <Suspense fallback={<p>Loading...</p>}>
+                <div className={styles.showcaseText}>
+                  Bitcoin price:
+                  <GetBitcoinData />
+                </div>
+              </Suspense>
               <h3>Raw Data</h3>
               <pre className={styles.preBox}>
                 {JSON.stringify(
