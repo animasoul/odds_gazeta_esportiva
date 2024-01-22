@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import useSWR from "swr";
 
 interface Currency {
   code: string;
@@ -26,26 +26,41 @@ interface BitcoinData {
   bpi: Bpi;
 }
 
+async function fetcher(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Error while fetching data");
+  }
+  return res.json();
+}
+//const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function GetBitcoinData() {
-  const [bitcoinData, setBitcoinData] = useState<BitcoinData | null>(null);
+  const {
+    data: bitcoinData,
+    error,
+    isLoading,
+  } = useSWR<BitcoinData>("../api/bitcoin", fetcher);
 
-  useEffect(() => {
-    fetch("../api/bitcoin")
-      .then((res) => res.json())
-      .then((data: BitcoinData) => setBitcoinData(data))
-      .catch((error) => console.error("Error:", error));
-  }, []);
+  if (error) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
 
-  if (bitcoinData === null) {
-    return <p>Loading...</p>;
-  } else {
+  if (isLoading || !bitcoinData) {
     return (
       <div>
-        <p>
-          {bitcoinData.bpi.USD.rate} {bitcoinData.bpi.USD.code}
-        </p>
-        <p>{bitcoinData.time.updated}</p>
+        <p>Loading...</p>
+        <p>Loading...</p>
       </div>
     );
   }
+
+  return (
+    <div>
+      <p>
+        {bitcoinData.bpi.USD.rate} {bitcoinData.bpi.USD.code}
+      </p>
+      <p>{bitcoinData.time.updated}</p>
+    </div>
+  );
 }

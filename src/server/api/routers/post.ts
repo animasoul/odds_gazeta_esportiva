@@ -63,12 +63,12 @@ const defaultTermRelationshipsSelect = {
   term_order: true,
 } satisfies Prisma.wp_term_relationshipsSelect;
 
-const defaultPostMetaSelect = {
-  meta_id: true,
-  post_id: true,
-  meta_key: true,
-  meta_value: true,
-} satisfies Prisma.wp_postmetaSelect;
+// const defaultPostMetaSelect = {
+//   meta_id: true,
+//   post_id: true,
+//   meta_key: true,
+//   meta_value: true,
+// } satisfies Prisma.wp_postmetaSelect;
 
 export const postRouter = createTRPCRouter({
   getLatest: publicProcedure.query(({ ctx }: { ctx: Context }) => {
