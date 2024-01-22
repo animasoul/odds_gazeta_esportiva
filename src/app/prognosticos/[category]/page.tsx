@@ -10,6 +10,24 @@ interface CategoryData {
     // include other properties as needed
   };
 }
+// interface Category {
+//   wp_terms: {
+//     slug: string;
+//   };
+// }
+
+// export async function getStaticPaths() {
+//   // Fetch all categories from the API
+//   const categories: Category[] = await api.post.getCategoriesSlug.query();
+//   console.log(categories);
+
+//   // Generate the paths
+//   const paths = categories.map((category) => ({
+//     params: { category: category.wp_terms.slug },
+//   }));
+
+//   return { paths, fallback: false };
+// }
 
 export default async function PostsByCategory({
   params,

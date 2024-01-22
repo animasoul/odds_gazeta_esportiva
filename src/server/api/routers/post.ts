@@ -205,6 +205,18 @@ export const postRouter = createTRPCRouter({
       where: { taxonomy: "category" },
     });
   }),
+  getCategoriesSlug: publicProcedure.query(({ ctx }: { ctx: Context }) => {
+    return ctx.db.wp_term_taxonomy.findMany({
+      select: {
+        wp_terms: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+      where: { taxonomy: "category" },
+    });
+  }),
   getAuthorById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(({ ctx, input }: { ctx: Context; input: { id: number } }) => {

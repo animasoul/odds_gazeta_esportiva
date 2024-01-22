@@ -40,7 +40,7 @@ export default function GetBitcoinData() {
     data: bitcoinData,
     error,
     isLoading,
-  } = useSWR<BitcoinData>("../api/bitcoin", fetcher);
+  } = useSWR<BitcoinData>("/api/bitcoin", fetcher);
 
   if (error) {
     return <div>Error: {(error as Error).message}</div>;

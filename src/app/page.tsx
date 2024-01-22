@@ -1,6 +1,6 @@
-import styles from "./index.module.css";
-import DisplayCategories from "~/app/_components/DisplayCategories";
+import styles from "~/app/index.module.css";
 import DisplayPosts from "~/app/_components/DisplayPosts";
+import Link from "next/link";
 
 export default async function Home() {
   return (
@@ -9,7 +9,9 @@ export default async function Home() {
         <h1 className={styles.title}>
           Gezeta <span className={styles.pinkSpan}>Esportiva</span> Demo
         </h1>
-        <DisplayCategories />
+        <Link href="/prognosticos">
+          <h2>See all Prognosticos →</h2>
+        </Link>
         <DisplayPosts />
       </div>
     </main>
