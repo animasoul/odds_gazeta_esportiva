@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
-import styles from "../index.module.css";
+import styles from "~/app/index.module.css";
 import Link from "next/link";
-import type { Post } from "../_types/post";
+import type { Post } from "~/app/_types/post";
 
 interface CategoryData {
   description: string;
@@ -46,7 +46,7 @@ export default async function PostsByCategory({
                     <span key={Number((post as { ID: bigint }).ID)}>
                       <br />
                       <Link
-                        href={`/${category}/${
+                        href={`/prognosticos/${category}/${
                           (post as { post_name: string }).post_name
                         }`}
                       >

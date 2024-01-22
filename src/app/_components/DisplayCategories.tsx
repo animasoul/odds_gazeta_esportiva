@@ -27,7 +27,7 @@ export default async function DisplayCategories() {
                 category.wp_terms && (
                   <Link
                     key={category.term_id}
-                    href={`/${category.wp_terms.slug}`}
+                    href={`/prognosticos/${category.wp_terms.slug}`}
                     className={styles.card}
                   >
                     <h3 className={styles.cardTitle}>

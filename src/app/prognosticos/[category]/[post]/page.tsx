@@ -1,8 +1,8 @@
 import { api } from "~/trpc/server";
-import styles from "../../index.module.css";
+import styles from "~/app/index.module.css";
 import Image from "next/image";
 import type { Metadata } from "next";
-import type { Post } from "../../_types/post";
+import type { Post } from "~/app/_types/post";
 import Link from "next/link";
 import { Suspense } from "react";
 import GetBitcoinData from "~/app/_components/GetBitcoinData";
@@ -82,7 +82,7 @@ export default async function PostBySlug({
                     >
                       Category:{` `}
                       <Link
-                        href={`/${relationship.wp_term_taxonomy.wp_terms.slug}`}
+                        href={`/prognosticos/${relationship.wp_term_taxonomy.wp_terms.slug}`}
                       >
                         {relationship.wp_term_taxonomy.wp_terms.name}
                       </Link>

@@ -41,7 +41,7 @@ export default async function DisplayPosts() {
                 post !== null ? (
                   <Link
                     key={post.ID}
-                    href={`/${
+                    href={`/prognosticos/${
                       post.wp_term_relationships.find(
                         (relationship) =>
                           relationship.wp_term_taxonomy?.taxonomy ===
