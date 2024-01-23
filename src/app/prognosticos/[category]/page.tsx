@@ -10,24 +10,24 @@ interface CategoryData {
     // include other properties as needed
   };
 }
-// interface Category {
-//   wp_terms: {
-//     slug: string;
-//   };
-// }
+interface CategoryParams {
+  category_slug: string;
+}
 
-// export async function getStaticPaths() {
-//   // Fetch all categories from the API
-//   const categories: Category[] = await api.post.getCategoriesSlug.query();
-//   console.log(categories);
+export async function generateStaticParams() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-//   // Generate the paths
-//   const paths = categories.map((category) => ({
-//     params: { category: category.wp_terms.slug },
-//   }));
-
-//   return { paths, fallback: false };
-// }
+  if (!apiUrl) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  }
+  const categoryParams: CategoryParams[] = await fetch(`${apiUrl}/params`).then(
+    (res) => res.json()
+  );
+  // console.log("categoryParams: ", categoryParams);
+  return categoryParams.map((categoryParam) => ({
+    category: categoryParam.category_slug,
+  }));
+}
 
 export default async function PostsByCategory({
   params,

@@ -14,6 +14,27 @@ function truncateText(text: string, length: number): string {
   return text.length > length ? text.substring(0, length) + "..." : text;
 }
 
+interface Params {
+  post_slug: string;
+  category_slug: string;
+}
+
+export async function generateStaticParams() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  }
+  const params: Params[] = await fetch(`${apiUrl}/params`).then((res) =>
+    res.json()
+  );
+  // console.log("params: ", params);
+  return params.map((param) => ({
+    category: param.category_slug,
+    post: param.post_slug,
+  }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // read route params
   const slug = params.post;

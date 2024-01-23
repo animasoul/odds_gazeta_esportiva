@@ -205,16 +205,36 @@ export const postRouter = createTRPCRouter({
       where: { taxonomy: "category" },
     });
   }),
-  getCategoriesSlug: publicProcedure.query(({ ctx }: { ctx: Context }) => {
-    return ctx.db.wp_term_taxonomy.findMany({
+  getParams: publicProcedure.query(({ ctx }: { ctx: Context }) => {
+    return ctx.db.wp_posts.findMany({
       select: {
-        wp_terms: {
+        post_name: true,
+        wp_term_relationships: {
           select: {
-            slug: true,
+            wp_term_taxonomy: {
+              select: {
+                wp_terms: {
+                  select: {
+                    slug: true,
+                  },
+                },
+              },
+            },
           },
+          where: { wp_term_taxonomy: { taxonomy: "category" } },
         },
       },
-      where: { taxonomy: "category" },
+      where: {
+        post_status: "publish",
+        post_type: "post",
+        // wp_term_relationships: {
+        //   some: {
+        //     wp_term_taxonomy: {
+        //       taxonomy: "category",
+        //     },
+        //   },
+        // },
+      },
     });
   }),
   getAuthorById: publicProcedure

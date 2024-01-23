@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 const inter = Inter({
   subsets: ["latin"],

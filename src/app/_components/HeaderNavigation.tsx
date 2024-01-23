@@ -11,8 +11,11 @@ export default function HeaderNavigation() {
         padding: "1rem",
         background: "#FFFFFF",
         boxShadow: "0px 3px 16px rgba(110, 110, 110, 0.15)",
+        width: "80%",
+        margin: "0 auto",
       }}
     >
+      <Link href="/">Home</Link>
       <Link href="/">
         <Image
           src="/icone-logo-gazeta.svg"
@@ -21,8 +24,7 @@ export default function HeaderNavigation() {
           height="36"
         />
       </Link>
-
-      <Link href="/">Home</Link>
+      <Link href="/prognosticos">Prognósticos</Link>
     </nav>
   );
 }
