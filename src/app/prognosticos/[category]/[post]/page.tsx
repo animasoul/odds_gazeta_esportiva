@@ -127,7 +127,7 @@ export default async function PostBySlug({
                 <GetBitcoinData />
               </div>
 
-              <h3>Raw Data</h3>
+              <h3 className={styles.showcaseText}>Raw Data</h3>
               <pre className={styles.preBox}>
                 {JSON.stringify(
                   post,

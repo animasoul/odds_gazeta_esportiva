@@ -103,7 +103,7 @@ model wp_posts {
   post_type             String   @default("post") @db.VarChar(20)
   post_mime_type        String   @default("") @db.VarChar(100)
   comment_count         BigInt   @default(0)
-  wp_term_relationships wp_term_relationships[]
+  wp_term_relationships wp_term_relationships[] 
 
   @@index([post_author], map: "post_author")
   @@index([post_name(length: 191)], map: "post_name")

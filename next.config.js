@@ -5,6 +5,13 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  poweredByHeader: false,
+};
 
 export default config;
